@@ -1,0 +1,15 @@
+id写成class
+
+class绑定数组没加{}
+
+var: 全局
+let：局部
+const： 常量
+
+Vue都是首字母大写
+
+props: ['xx'] 要加' '
+
+change写成了page
+
+(参数)=>{方法体}

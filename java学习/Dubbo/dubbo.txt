@@ -1,0 +1,33 @@
+软件架构的演进
+	单体架构
+		All in one
+		适合小型项目
+		技术栈受限
+		不利于维护、拓展
+	垂直架构
+		按照业务进行切割
+		技术栈可扩展
+	SOA架构（service-oriented architecture）
+		将重复功能或模块抽取成组件的形式，对外提供服务，项目与服务之间使用ESB（企业服务中线）的形式作为通信的桥梁。
+		开发、重用、维护性高。
+		设计难度大。
+	微服务
+		将系统服务层完全独立出来，抽取为一个个的微服务。
+		服务拆分粒度细开发效率高、好优化。
+		服务太多维护成本高。
+		
+Apache Dubbo
+	概述
+		是一款高性能的java prc框架
+		prc：remote procedure call 远程过程调用。
+			服务器A上的应用要调用服务B上应用的方法时需要通过网络来表达调用语义和传达调用的数据。指的是整个网络远程调用的过程。
+	架构
+		provider在container(spring)上运行并启动(异步，创建时执行)
+		provider到registry注册(异步，创建时执行)
+		consumer到registry订阅(异步，创建时执行)
+		registry通知consumer(异步，运行时执行)
+		consumer调用provider(同步，运行时执行)
+	
+	服务注册中心（registry）
+		zookeeper：树形结构目录
+		

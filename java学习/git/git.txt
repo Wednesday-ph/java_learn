@@ -1,0 +1,116 @@
+svn：集中式版本控制系统，版本库是集中放在中央服务器的，开发人需要用自己的电脑从中央服务器下载最新的版本
+git
+	概念
+		分布式版本控制系统，有本地仓库和远程仓库
+		本地仓库：开发人员自己电脑上的git仓库
+		远程仓库：远程服务器上的
+	指令
+		clone：将远程仓库复制到本地
+		push：上传到远程仓库
+		pull：下载到本地仓库
+	
+	工作流程
+		1.从远程仓库clone代码到本地仓库
+		2.从本地仓库checkout代码到工作区修改
+		3.commit前将代码commit到暂存区
+		4.commit到本地仓库。本地仓库保存修改的各个历史版本
+		5.push到远程仓库
+		
+		6.下次需要远程仓库的代码直接pull到工作区
+		
+	git代码托管服务
+		借助平台的托管服务来实现如：码云,github
+		
+		码云
+			仓库管理中添加他人协作
+		
+	git常用命令
+		本地仓库
+			设置用户信息和配置信息，存于~/.gitconfig
+			在目录下init一个仓库
+			在目录下clone一个仓库
+			查看状态
+			加入暂存区
+			取消暂存
+			提交到仓库，写日志信息
+			删除文件（会加到暂存区），提交。如果是手动删除还需要自己加入暂存区提交。
+			将文件加入忽略列表 .gitignore
+			查看日志
+		远程仓库
+			查看配置（对应）的远程仓库
+			配置远程仓库（建立关系）
+			clone远程仓库
+			移除远程仓库的连接
+			抓取并合并
+			抓取，合并
+			推送
+		
+	
+	git结构
+		.git	：版本库，存储了配置、日志等信息
+		工作区	：包含.git的目录，用于存放开发代码
+		暂存区	：.git中的index文件，也可以叫做stage。
+			工作区 ->add-> 暂存区 ->commit-> 版本库
+		分支	：与主线分离，以免影响开发
+	
+	git工作目录下的两种状态（随着git命令而改变）
+		untracked 未跟踪（未被纳入版本控制）
+		tracked
+			unmodified	未修改
+			modified	
+			staged		暂存
+	
+	git分支
+		命令
+			查看分支
+			创建分支（以当前分支为基础）
+			切换分支
+			push分支到远程仓库
+			合并分支，手动解决冲突
+			删除分支
+		案例：新建一个fix分支用于修补master分支
+			1.master创建fix
+			2.切换fix
+			3.修改
+			4.切换master
+			6.合并fix
+			6.上传
+	
+	git标签
+		概念：指的是某个分支某个特定时间点的转态。通过标签可以回到标记时的状态。
+		
+		命令
+			列出标签
+			新建标签
+			查看标签
+			推送
+			创建分支（为标签时的转态）检出标签
+			删除标签
+
+IDEA中使用git
+	加入暂存区并提交
+		1.setting versionControl git中设置git路径
+		2.VCS import createGitRep选中要上传的仓库
+		3.新建.gitignore文件填写忽略文件名
+		4.右键项目 git add 	：	填入缓存区
+		5.				commit 	：	提交到本地仓库
+		
+		6. 点√直接提交，点 “箭头” 直接拉取
+		7.commitAndPush 提交并推送
+	提交至远程仓库
+		1.右键项目 git repository push defineRemote(定义仓库) push
+	clone远程仓库
+		1.closeProject getFromVersion
+	拉取远程仓库
+		VSC Git pull
+	版本比较
+		右键 compareWith
+	分支
+		创建（此文件下）：vsc git branches createNewBranches
+		查看：versionControl
+		切换：右键当前文件 git repository branches	xx(checkOut)
+		合并：右键当前文件 git repository megerChanges	xx meger
+
+SSH（secure shell）
+	使用：创建一堆密钥（公钥、私钥），公钥放要访问的服务器上。（https是用户名和密码）
+	
