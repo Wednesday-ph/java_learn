@@ -1,3 +1,8 @@
+# 教程
+
+- 编程不良人b站的docker视频
+- [github上的教程](https://github.com/yeasy/docker_practice/blob/master/install/centos.md)
+
 # 什么是docker
 
 - 应用容器技术：将环境打包在容器中，在别的机器上就无需考虑环境的问题了
@@ -17,3 +22,29 @@
 
 - 不携带操作系统
 - 虚拟内存 》 物理内存
+
+# CentOS7下安装docker
+
+```shell
+//使用脚本命令安装
+$ curl -fsSL get.docker.com -o get-docker.sh
+$ sudo sh get-docker.sh --mirror Aliyun
+
+//查询状态,开启，重启docker（ctl control）
+$ systemctl status | start | restart docker
+
+//查询docker信息
+$ docker info
+
+//配置docker自启动
+$ systemctl enable docker
+
+//建立docker用户组，并将当前用户加入（super user do）
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+
+//重启
+
+
+```
+
