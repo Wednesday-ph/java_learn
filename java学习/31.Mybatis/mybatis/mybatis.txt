@@ -1,0 +1,340 @@
+mybatis
+	概念
+		持久层框架
+		使用orm思想实现了结果集的封装（object relational mapping 对象关系映射）
+			操作实体类就可以操作数据库表
+	
+	配置文件
+		主配置文件
+			<configuration>
+				//用于引入外部配置文件
+				//resource参数：resource下。url参数：路径全称
+				<properties resource="jdbcConfig.xml"></properties>
+				
+				//配置typeAliases配置别名，只能是类，别名不区分大小写
+				<typeAliases>
+					//单一指定
+					<typeAlias type="domain.User" alias="user"></typeAlias>
+					//指定包下所有，别名为类名
+					<pakage name="domain"></pakage>
+				</typeAliases>
+			
+				//配置环境
+				<environments default="mysql">
+					//配置mysql的环境
+					<environment id="mysql">
+						//配置事务的类型
+						<transactionManager type="JDBC"></transactionManager>
+						//配置数据源
+						<dataSource type="POOLED">
+							//配置连接数据库的4个基本信息
+							<property name="driver" value="com.mysql.jdbc.Driver"/>
+							<property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+							<property name="username" value="root"/>
+							<property name="password" value="root"/>
+						</dataSource>
+					</environment>
+				</environments>
+				
+				//指定xml配置或注解配置
+					//指定映射配置文件的位置，映射配置文件指的是每个dao独立的配置文件
+					<mappers>
+						<mapper resource="com/itheima/dao/IUserDao.xml">
+					</mappers>
+					
+					//使用注解时的mappers配置
+					<mappers>
+						<mapper class="com.IUserDao"/>
+					</mappers>
+					
+					<mappers>
+						//配置package就无需配置mapper了
+						<package name="itheima.dao"></package>
+					</mappers>
+			</configuration>
+		
+		映射配置文件或注解
+			映射配置文件
+				//所对dao的全限定类名
+				<mapper namespace="com.tiheima.dao.IUserDao">
+					//dao的方法名。封装到哪？
+					<select id="findAll" resultType="com.User">
+						select * from user
+					</select>
+				</mapper>
+			
+			注解
+				@select("select * from user")
+				List<User> findAll();
+		
+		注意：
+			创建包：com.itheima.dao
+			创建目录: com/itheima/dao
+			映射配置文件要和dao接口的包的结构一致: 就无需写实现类了
+	
+	实例
+		//1.读取配置文件
+		InputStream in = Resources.getResourceAsStream("SqlMapConfig.xml");
+		//2.创建SqlSessionFactory工厂
+		SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+		SqlSessionFactory factory = builder.build(in);
+		//3.使用工厂生产SqlSession对象
+		SqlSession session = factory.openSession();
+		//4.使用SqlSession创建dao接口的代理对象
+		IUserDao userDao = session.getMapper(IUserDao.class);
+		//5.使用代理对象执行方法
+		List<User> users = userDao.findAll();
+		//6.释放资源
+		session.close();
+		in.close();
+			
+	分析mybatis的步骤
+		主配置文件的配置信息（driver），映射文件的配置地址
+		映射文件的配置信息(类名，方法名，sql，实体类),并将配置信息封装供代理时调用
+		
+	CRUD
+		C
+			//写上传入的类型（全限定类名）
+			<insert id="addOne" parameterType="com.User">
+				//传入类型的属性(#{属性})。只有一个值的时候可以随意
+				insert into user(name) values(#{name})
+			</insert>
+			
+			//保存用户并获取id
+			<insert ...>
+				//属性，列名，返回类型，何时执行
+				<selectKey keyProperty="id" keyColumn="id" resultType="int" order="After">
+					select last_insert_id();
+				</selectKey>
+				insert into ......
+			</insert>
+			
+			//需要提交事务
+			sqlSession.commit();
+			
+		R
+			//模糊查询。传入的参数需要加上%
+			userDao.findByName("%王%");
+	
+	参数
+		使用的是ognl表达式（object graphic navigation language）,即对象.属性来获取属性
+			<insert .. parameterType="domain.vp">
+				select * from user where name like #{user.name}
+			</insert>
+		
+		类的属性和数据库的列名一致，查询时数据就可直接封装到类中，否则无法匹配
+			可以给 库的列名 取 类的属性 别名
+			在mapper中配置resultMap映射关系
+				<mapper>
+					<resultMap id="随意" type="domain.User">
+						//主键字段的对应
+						<id property="userId" colum="id"></id>
+						//非主键字段的对应
+						<result property="userName" colum="username"> </result>
+					</resultMap>
+					
+					//resultMap替换resultType
+					<select resultMap="随意">
+					
+					</select>
+				</mapper>
+				
+	配置文件
+		<configuration>
+			//用于引入外部配置文件
+			//resource参数：resource下。url参数：路径全称
+			<properties resource="jdbcConfig.xml"></properties>
+			
+			//配置typeAliases配置别名，只能是类，别名不区分大小写
+			<typeAliases>
+				//单一指定
+				<typeAlias type="domain.User" alias="user"></typeAlias>
+				//指定包下所有，别名为类名
+				<pakage name="domain"></pakage>
+			</typeAliases>
+			
+			<environments ..>
+				<environment ..>
+					..
+					<dataSource ..>
+						<property name="driver" value="${driver}"/>
+					<dataSource>
+				</environment>
+			</environments>
+			
+			<mappers>
+				//配置package就无需配置mapper了
+				<package name="itheima.dao"></package>
+			</mappers>
+		</configuration>
+	
+	连接池
+		原理
+			容器分为空闲池和活动池，如果空间池有链接就从空闲池拿，没有就去活动池，如果活动池满了，就用最老的链接（并进行设置使其可以使用）
+		应用
+			<configuration>
+				<environments ..>
+					<environment ..>
+						..
+						//使用的是连接池
+						<dataSource type="POOLED">
+							..
+						</dataSource>
+					</environment>
+				</environments>
+			</configuration>
+	事务
+		改为自动提交
+			sqlSession.openSession(true);
+	
+	动态sql
+		//if标签的使用
+		<select ...>
+			select * from user where 1=1
+			<if test="userName != null">
+				and username = #{userName}
+			</if>
+			<if test="userSex != null">
+				and sex = #{userSex}
+			</if>
+		</select>
+		
+		//where标签的使用
+		<select ....>
+			select * from user
+			<where>
+				<if test="userName != null">
+					and username = #{userName}
+				</if>
+				<if test="userSex != null">
+					and sex = #{userSex}
+				</if>
+			</where>
+		</select>
+		
+		//foreach的使用
+		<select ....>
+			select * from user
+			<where>
+				//不能使用&&
+				<if test="ids != null and ids.size()>0">
+					<foreach collection="ids" open="and id in ( " close=")" item="uid" separator=",">
+						#{uid}
+					</foreach>
+				</if>
+			</where>
+		</select>
+		
+	多表操作
+		多对一（在mybatis中为一对一）
+			//查询所有账户同时包含用户名个地址信息
+			从表javabean中引用主表
+			resultMap中填写映射关系
+				<resultMap ... type="account" > 
+					<id ..>
+					//user的映射
+					<association property="user" javaType="user">
+						<id ...>
+					</association>
+				</resultMap>
+				
+				<select>select * from user,account where user.id = account.uid</select>
+		一对多
+			//查询所有用户同时包含账户信息
+			主表javabean中引用集合从表
+			resultMap中填写映射关系
+				<resultMap ... type="user" > 
+					<id ..>
+					//accounts集合的映射
+					<collection property="accounts" ofType="account">
+						<id ...>
+					</collection>
+				</resultMap>
+		
+		多对多
+			//查询角色同时包含拥有这些角色的用户信息
+			左连中间表再左连从表
+			跟一对多一样
+	
+	
+	延迟加载
+		延迟加载：按需加载（一个用户多个账户）
+			一对多，多对多
+		立即加载：一调用方法就加载(账户的用户)
+			一对一
+		
+		实现
+			//设置中开启延迟加载
+			<settings>
+				<setting name="lazyLoadingEnabled" value="true">
+			</settings>
+			
+			对一
+				<resultMap id="map" type="account">
+					...
+					//在映射中查询另一个表
+					<association ... column="uid" select="userDao.findByid">
+					</association>
+				</resultMap>
+				//查询单个表
+				<select ... resultMap="map">
+					select * from account
+				</select>
+				
+			对多
+				与对一一致，<collection>
+	缓存
+		一级缓存
+			存于sqlsession中，结构是map，查询相同的数据时会先从sqlsession中查询。当 sqlsession对象消失时    或者 调用(clearCache(),cud等方法)，一级缓存消失
+		二级缓存
+			存于sqlSessionFactory中，存的是数据，谁获取就创建一个对象封装数据，其创建的sqlSession共享其缓存（数据）
+			实现
+				1.在config.xml中配置(不配也行)
+					<settings>
+						<setting name="cacheEnabled" value="true" />
+					</settings>
+				2.在mapper.xml中配置
+					<mapper>
+						//开启二级缓存支持
+						<cache/>
+						//开启缓存
+						<select ... useCache="true">select * from user</select>
+					</mapper>
+	注解：
+		*使用注解时，配置了mapper.xml会报错不管用没用
+		crud注解：@Insert(sqlString)，@Delete，@Update,@Select
+		返回类型映射注解：
+			//在一个方法上配置映射并使用
+			@Results(id="userMap",value={
+				@Result(id=true,colum="id",property="userId"),
+				@Result(colum="username",property="userName")
+			})
+			//另一个方法也想使用已配置的映射
+			@ResultMap("userMap")
+		多表操作
+			一对一
+			//查询账户信息并显示用户信息
+			//不需要写多表查询，只需配置关系
+			@select("select * from ACCOUNT")
+			@Results(id="userMap",value={
+				@Result(id=true,column="id",property="userId"),
+				@Result(column="username",property="userName")，
+				//fetchType用于配置延迟或立即加载
+				@Result(property="user",column="uid",one=@One(select="UserDao.findById",fetchType=FetchType.EAGER))
+			})
+			
+			一对多
+				many
+		
+		缓存
+			开启二级缓存：所在dao类上@CacheNamespace(blocking = true)
+			
+				
+		
+		
+		
+如何在测试方法执行前后执行方法？
+	在方法上加@Before/@After注解
+		
+
+
