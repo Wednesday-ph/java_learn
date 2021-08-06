@@ -1,11 +1,11 @@
-# 教程
+教程
 
 - 编程不良人b站的docker视频
 - [github上的教程](https://github.com/yeasy/docker_practice/blob/master/install/centos.md)
 
 # 什么是docker
 
-- 应用容器技术：将环境打包在容器中，在别的机器上就无需考虑环境的问题了
+- 应用容器技术：将环境打包在容器中，在别的机器上就无需考虑环境的问题了。（如：mysql容器，redis容器）
   - 会将应用程序和环境一起打包
 - 容器隔离 进程隔离
 
@@ -48,3 +48,34 @@ $ sudo usermod -aG docker $USER
 
 ```
 
+# 核心概念&架构图
+
+<img src="img/核心概念&架构图.jpg" alt="核心概念&架构图" style="zoom: 200%;" />
+
+# 下载加速
+
+
+
+
+
+![](img/下载加速.jpg)
+
+# 入门案例
+
+docker run hello-world
+
+![入门案例](img/入门案例.jpg)
+
+
+
+# 镜像操作
+
+![](img/镜像操作.jpg)
+
+
+
+# 容器基本操作
+
+![](img/容器基本操作1.jpg)
+
+![](img/容器基本操作2.jpg)
