@@ -79,3 +79,12 @@ docker run hello-world
 ![](img/容器基本操作1.jpg)
 
 ![](img/容器基本操作2.jpg)
+
+![](img/容器的基本操作3.jpg)<img src="img/容器的基本操作4.jpg" style="zoom:100%;" />
+
+
+
+# 镜像分层原理
+
+![](img/镜像分层原理.jpg)
+
