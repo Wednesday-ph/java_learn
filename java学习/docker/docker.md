@@ -82,9 +82,17 @@ docker run hello-world
 
 ![](img/容器的基本操作3.jpg)<img src="img/容器的基本操作4.jpg" style="zoom:100%;" />
 
+- 数据卷存在并不为空时，不会复制
 
+# 数据卷详解
+
+![](img/数据卷详解.png)
 
 # 镜像分层原理
 
 ![](img/镜像分层原理.jpg)
+
+# 通信机制&网桥的使用.png
+
+![](img/通信机制&网桥的使用.png)
 
