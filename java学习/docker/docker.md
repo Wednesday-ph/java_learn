@@ -82,7 +82,7 @@ docker run hello-world
 
 ![](img/容器的基本操作3.jpg)<img src="img/容器的基本操作4.jpg" style="zoom:100%;" />
 
-- 数据卷存在并不为空时，不会复制
+- 数据卷存在并为空时，将容器中的内容复制到数据卷。不为空时，将数据卷复制到
 
 # 数据卷详解
 
@@ -96,3 +96,16 @@ docker run hello-world
 
 ![](img/通信机制&网桥的使用.png)
 
+# 核心架构图
+
+![](img/核心架构图.png)
+
+
+
+# 安装mysql
+
+![](img/安装mysql.png)
+
+# 安装redis
+
+![](img/安装redis.png)
