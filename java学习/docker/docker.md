@@ -1,3 +1,7 @@
+# 注意
+
+- 输入虚拟机的ip
+
 教程
 
 - 编程不良人b站的docker视频
@@ -109,3 +113,74 @@ docker run hello-world
 # 安装redis
 
 ![](img/安装redis.png)
+
+# dockerfile
+
+![](img/dockerfile.png)
+
+
+
+```java
+创建dockerfile目录（上下文），文件
+
+进入文件编写
+
+//基于centos7
+FROM centos7
+//执行指令    
+run yum install -y vim    
+//将端口暴露，外界才能访问
+EXPOSE 8080
+//定义变量便于复用
+ENV WORK_DIR B    
+//进入容器后的落脚点，没有将自动创建。相对路径基于之前的绝对路径
+WORKDIR /A
+WORKDIR $WORK_DIR    
+//将文件(war包)传入到容器中
+COPY AA.txt /A/B
+//可以写URL/压缩包，直接下载/解压到目录中。   
+ADD www.tomcat.com /A/B
+ADD tomcat.tar.zg /A/B    
+//数据卷
+VOLUME /data/websapp    
+//run后直接执行指令,CMD也一样。但更多的是EP写指令，CMD写参数。run后直接跟参数
+ENTRYPOINT ["ls"]    
+CMD ["/"]    
+
+//退回到目录执行。.当前目录。-t 仓库名:版本号。仓库名小写
+
+docker build -t myCentOS7:0.1 .
+```
+
+# 构建springboot应用
+
+```java
+开发好项目
+用maven的package打成jar包
+//全选路径直接输入cmd    
+用cmd运行java -jar xxx.jar
+
+```
+
+![](img/构建springboot应用.png)
+
+
+
+# idea中docker插件和远程连接docker
+
+```java
+- 插件中搜索docker
+- 重启
+- 创建file名称为Dockerfile    
+
+- Tools -> Deployment -> browser remote host
+- ... -> 输入ip,选择sftp -> 完善远程端信息    
+
+创建Dockerfile,书写，上传    
+```
+
+# docker-compose的使用
+
+![](img/compose的安装.png)
+
+![](img/compose入门.png)
