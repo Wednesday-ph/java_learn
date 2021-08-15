@@ -184,3 +184,13 @@ docker build -t myCentOS7:0.1 .
 ![](img/compose的安装.png)
 
 ![](img/compose入门.png)
+
+
+
+# compose命令模板
+
+![](img/compose命令模板1.png)
+
+![](img/compose命令模板2.png)
+
+![](img/compose命令模板3.png)
