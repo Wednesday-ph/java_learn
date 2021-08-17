@@ -76,6 +76,11 @@ docker run hello-world
 
 ![](img/镜像操作.jpg)
 
+```java
+//删除仓库名为demo的镜像
+ docker rmi  -f $(docker images demo -qa)
+```
+
 
 
 # 容器基本操作
@@ -187,10 +192,91 @@ docker build -t myCentOS7:0.1 .
 
 
 
-# compose命令模板
+# compose模板指令
 
-![](img/compose命令模板1.png)
+```yaml
+version: "3.0"
 
-![](img/compose命令模板2.png)
+services:
+  tomcat01:
+    image: tomcat:8-jre8
+    ports:
+      - 8080:8080
+    volumes:
+      - tomcatwebapps01:/usr/local/tomcat/webapps
+    networks:
+      - hello
+    depends_on:
+      - tomcat02
+      - mysql
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    #sysctls:
+      #- net.core.somaxconn=1024
+      #- net.ipv4.tcp_syncookies=0
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
 
-![](img/compose命令模板3.png)
+  tomcat02:
+    image: tomcat:8-jre8
+    ports:
+      - 8081:8080
+    volumes:
+      - tomcatwebapps02:/usr/local/tomcat/webapps
+    networks:
+      - hello
+
+  reids:
+    image:  redis:4.0.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - hello
+    command: "redis-server --appendonly yes"
+
+  mysql:
+    image:  mysql:5.7.32
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - mysqlconf:/etc/mysql
+    #environment:
+      #- MYSQL_ROOT_PASSWORD=root
+    env_file:
+      - mysql.env
+    networks:
+      - hello
+
+volumes:
+  tomcatwebapps01:
+  tomcatwebapps02:
+  mysqldata:
+  mysqlconf:
+  redisdata:
+
+networks:
+  hello:
+
+
+
+
+```
+
+![](img/compose命令模板.png)
+
+## build
+
+![](img/build.png)
+
