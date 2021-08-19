@@ -604,4 +604,20 @@
   !App.class    
   ```
 
-- 
+
+
+
+# idea中使用
+
+```java
+//启用版本控制
+- VCS -> Enable -> Git
+    
+//以上方法不好用
+- 将.git删除掉
+- 设置 -> version control -> 删除    
+    
+//将终端设置为linux的sh.exe
+- 设置 -> terminal -> shell path 设置成git中的sh.exe    
+```
+
