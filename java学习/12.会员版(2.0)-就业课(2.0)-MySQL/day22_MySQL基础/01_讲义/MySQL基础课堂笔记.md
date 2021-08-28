@@ -15,13 +15,14 @@
 	1. 数据库的英文单词： DataBase 简称 ： DB
 	2. 什么数据库？
 		* 用于存储和管理数据的仓库。
-
+	
 	3. 数据库的特点：
 		1. 持久化存储数据的。其实数据库就是一个文件系统
 		2. 方便存储和管理数据
 		3. 使用了统一的方式操作数据库 -- SQL
 
-	
+
+​	
 	4. 常见的数据库软件
 		* 参见《MySQL基础.pdf》
 
@@ -95,7 +96,7 @@
 				* create database if not exists 数据库名称;
 			* 创建数据库，并指定字符集
 				* create database 数据库名称 character set 字符集名;
-
+	
 			* 练习： 创建db4数据库，判断是否存在，并制定字符集为gbk
 				* create database if not exists db4 character set gbk;
 		2. R(Retrieve)：查询
@@ -137,11 +138,11 @@
 					4. datetime:日期，包含年月日时分秒	 yyyy-MM-dd HH:mm:ss
 					5. timestamp:时间错类型	包含年月日时分秒	 yyyy-MM-dd HH:mm:ss	
 						* 如果将来不给这个字段赋值，或赋值为null，则默认使用当前的系统时间，来自动赋值
-
+	
 					6. varchar：字符串
 						* name varchar(20):姓名最大20个字符
 						* zhangsan 8个字符  张三 2个字符
-				
+
 
 			* 创建表
 				create table student(
@@ -198,7 +199,7 @@
 	3. 修改数据：
 		* 语法：
 			* update 表名 set 列名1 = 值1, 列名2 = 值2,... [where 条件];
-
+	
 		* 注意：
 			1. 如果不加任何条件，则会将表中所有记录全部修改。
 
@@ -238,54 +239,56 @@
 				* 如果该字段为null后的替换值。
 		4. 起别名：
 			* as：as也可以省略
-			
 
-	3. 条件查询
-		1. where子句后跟条件
-		2. 运算符
-			* > 、< 、<= 、>= 、= 、<>
-			* BETWEEN...AND  
-			* IN( 集合) 
-			* LIKE：模糊查询
-				* 占位符：
-					* _:单个任意字符
-					* %：多个任意字符
-			* IS NULL  
-			* and  或 &&
-			* or  或 || 
-			* not  或 !
-			
-				-- 查询年龄大于20岁
 
-				SELECT * FROM student WHERE age > 20;
-				
-				SELECT * FROM student WHERE age >= 20;
-				
-				-- 查询年龄等于20岁
-				SELECT * FROM student WHERE age = 20;
-				
-				-- 查询年龄不等于20岁
-				SELECT * FROM student WHERE age != 20;
-				SELECT * FROM student WHERE age <> 20;
-				
-				-- 查询年龄大于等于20 小于等于30
-				
-				SELECT * FROM student WHERE age >= 20 &&  age <=30;
-				SELECT * FROM student WHERE age >= 20 AND  age <=30;
-				SELECT * FROM student WHERE age BETWEEN 20 AND 30;
-				
-				-- 查询年龄22岁，18岁，25岁的信息
-				SELECT * FROM student WHERE age = 22 OR age = 18 OR age = 25
-				SELECT * FROM student WHERE age IN (22,18,25);
-				
-				-- 查询英语成绩为null
-				SELECT * FROM student WHERE english = NULL; -- 不对的。null值不能使用 = （!=） 判断
-				
-				SELECT * FROM student WHERE english IS NULL;
-				
-				-- 查询英语成绩不为null
-				SELECT * FROM student WHERE english  IS NOT NULL;
-	
+```mysql
+3. 条件查询
+	1. where子句后跟条件
+	2. 运算符
+		* > 、< 、<= 、>= 、= 、<>
+		* BETWEEN...AND  
+		* IN( 集合) 
+		* LIKE：模糊查询
+			* 占位符：
+				* _:单个任意字符
+				* %：多个任意字符
+		* IS NULL  
+		* and  或 &&
+		* or  或 || 
+		* not  或 !
+		
+			-- 查询年龄大于20岁
+
+			SELECT * FROM student WHERE age > 20;
+			
+			SELECT * FROM student WHERE age >= 20;
+			
+			-- 查询年龄等于20岁
+			SELECT * FROM student WHERE age = 20;
+			
+			-- 查询年龄不等于20岁
+			SELECT * FROM student WHERE age != 20;
+			SELECT * FROM student WHERE age <> 20;
+			
+			-- 查询年龄大于等于20 小于等于30
+			
+			SELECT * FROM student WHERE age >= 20 &&  age <=30;
+			SELECT * FROM student WHERE age >= 20 AND  age <=30;
+			SELECT * FROM student WHERE age BETWEEN 20 AND 30;
+			
+			-- 查询年龄22岁，18岁，25岁的信息
+			SELECT * FROM student WHERE age = 22 OR age = 18 OR age = 25
+			SELECT * FROM student WHERE age IN (22,18,25);
+			
+			-- 查询英语成绩为null
+			SELECT * FROM student WHERE english = NULL; -- 不对的。null值不能使用 = （!=） 判断
+			
+			SELECT * FROM student WHERE english IS NULL;
+			
+			-- 查询英语成绩不为null
+			SELECT * FROM student WHERE english  IS NOT NULL;
+```
+
 
 
 				-- 查询姓马的有哪些？ like
@@ -296,11 +299,12 @@
 				
 				-- 查询姓名是3个字的人
 				SELECT * FROM student WHERE NAME LIKE '___';
-				
-				
+
+
+​				
 				-- 查询姓名中包含德的人
 				SELECT * FROM student WHERE NAME LIKE '%德%';
 
 
 
-	
+​	
